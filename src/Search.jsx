@@ -2,16 +2,28 @@
 import React, { useState } from "react";
 import { Data } from "../src/utilities/Data";
 import "../src/CSS/SearchData.css";
-
+import UseDebounce from '../src/utilities/UseDebounce'
 const SearchData = () => {
     const [data, setData] = useState("");
+    const [sortOrder, setSortOrder] = useState("asc");
+
+    const debounceValue = UseDebounce(data, 500);
 
     const searchedData = Data.filter((fruit) => {
         return (
-            fruit.name.toLowerCase().includes(data.toLowerCase()) ||
-            fruit.color.toLowerCase().includes(data.toLowerCase())
+            fruit.name.toLowerCase().includes(debounceValue.toLowerCase()) ||
+            fruit.color.toLowerCase().includes(debounceValue.toLowerCase())
         );
     });
+
+    const sortedData = [...searchedData].sort((a, b) => {
+        if (sortOrder === "asc") {
+            return a.name.localeCompare(b.name);
+        } else {
+            return b.name.localeCompare(a.name);
+        }
+    });
+    console.log("sortedDatasortedData-----", sortedData);
 
     return (
         <div className="fruits-page">
@@ -41,14 +53,33 @@ const SearchData = () => {
                     )}
                 </div>
 
-                <div className="results-info">
+                {/* <div className="results-info">
                     <h2>Our Fruits</h2>
                     <span>{searchedData.length} items found</span>
+                </div> */}
+
+
+                <div className="results-info">
+                    <h2>Our Fruits</h2>
+
+                    <div className="sort-section">
+                        <span>{sortedData.length} items found</span>
+
+                        <button
+                            className="sort-btn"
+                            onClick={() =>
+                                setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                            }
+                        >
+                            {sortOrder === "asc" ? "↑ A–Z" : "↓ Z–A"}
+                        </button>
+                    </div>
                 </div>
 
+
                 <div className="fruits-grid">
-                    {searchedData.length > 0 ? (
-                        searchedData.map((fruit, index) => (
+                    {sortedData.length > 0 ? (
+                        sortedData.map((fruit, index) => (
                             <div className="fruit-card" key={fruit.name}>
                                 <div className="fruit-icon">
                                     {["🍎", "🍌", "🍊", "🍇", "🍓", "🍉"][index % 6]}
