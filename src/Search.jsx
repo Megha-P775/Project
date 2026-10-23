@@ -18,7 +18,7 @@ const SearchData = () => {
             <div className="fruits-container">
                 <header className="fruits-header">
                     <span className="fruits-tag">FRESH & HEALTHY</span>
-                    <h1>Fruit Basket 🍓</h1>
+                    <h1>Nature Basket 🍓</h1>
                     <p>Discover your favorite fruits in one place.</p>
                 </header>
 
